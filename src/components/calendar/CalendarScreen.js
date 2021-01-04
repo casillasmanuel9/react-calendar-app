@@ -17,16 +17,7 @@ import { AddNewFab } from '../ui/addNewFab'
 import { DeleteEventFab } from '../ui/DeleteEventFab';
 moment.locale('es');
 
-const localizer = momentLocalizer(moment) // or globalizeLocalizer
-
-const events = [
-    {
-        title: 'Cumpleaños del jefe', start: moment().toDate(), end: moment().add(2, 'hours').toDate(), bgcolor: '#fafafa', notes: 'comprar pastel', user: {
-            _id: 123,
-            name: 'Manuel'
-        }
-    }
-]
+const localizer = momentLocalizer(moment);
 
 export const CalendarScreen = () => {
 
@@ -39,11 +30,9 @@ export const CalendarScreen = () => {
 
     const onDoubleClick = (e) => {
         dispatch(uiOpenModal());
-        console.log(e);
     }
 
     const onSelectEvent = (e) => {
-        console.log(e);
         dispatch(eventSetActive(e));
     }
 
