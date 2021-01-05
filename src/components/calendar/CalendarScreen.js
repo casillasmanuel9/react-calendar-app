@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navbar } from './Navbar'
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -12,7 +12,7 @@ import { CalendarEvent } from './CalendarEvent';
 import { CalendarModal } from './CalendarModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiOpenModal } from '../../actions/ui';
-import { eventSetActive } from '../../actions/events';
+import { eventSetActive, eventStartLoadin } from '../../actions/events';
 import { AddNewFab } from '../ui/addNewFab'
 import { DeleteEventFab } from '../ui/DeleteEventFab';
 moment.locale('es');
@@ -24,6 +24,7 @@ export const CalendarScreen = () => {
     const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month');
 
     const { events, active } = useSelector(state => state.calendar);
+    const { id } = useSelector(state => state.auth)
 
     console.log('events', events);
     const dispatch = useDispatch();
@@ -41,9 +42,13 @@ export const CalendarScreen = () => {
         localStorage.setItem('lastView', e);
     }
 
-    const eventStyleGetter = () => {
+    useEffect(() => {
+        dispatch(eventStartLoadin());
+    }, [dispatch])
+
+    const eventStyleGetter = (event) => {
         const style = {
-            backgroundColor: '#367CF7',
+            backgroundColor: (id === event.user._id) ? '#367CF7' : '#464660',
             borderRadius: '0px',
             opacity: 0.8,
             display: 'block',
